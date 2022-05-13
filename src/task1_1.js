@@ -1,3 +1,3 @@
 process.stdin.on('data', data => {
-  console.log([...data.toString().trim()].reverse().join('') + '\n');
+  process.stdout.write([...data.toString().trim()].reverse().join('') + '\n\n');
 });

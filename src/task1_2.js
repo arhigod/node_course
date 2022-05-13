@@ -12,11 +12,19 @@ mkdirSync(PATH_TXT.replace(/[^/]*$/, ''), { recursive: true });
 const readStream = createReadStream(PATH_CSV);
 const writeStream = createWriteStream(PATH_TXT);
 
-readStream.pipe(csv()).subscribe(
-  json => writeStream.write(JSON.stringify(json) + '\n'),
-  console.error,
-  () => {
-    readStream.destroy();
-    writeStream.destroy();
-  }
-);
+readStream
+  .pipe(
+    csv({
+      headers: ['book', 'author', '@', 'price'],
+      ignoreColumns: /@/,
+      colParser: { price: 'number' }
+    })
+  )
+  .subscribe(
+    json => writeStream.write(JSON.stringify(json) + '\n'),
+    console.error,
+    () => {
+      readStream.destroy();
+      writeStream.destroy();
+    }
+  );
