@@ -8,7 +8,7 @@ app.use(express.json());
 app.use('/user', user);
 
 app.use('/', (err, _req, res, next) => {
-  res.status(404).json(err);
+  res.status(400).json(err);
   next(err);
 });
 

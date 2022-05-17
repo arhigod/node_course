@@ -3,6 +3,7 @@ import joiValidator from 'express-joi-validation';
 import { randomUUID } from 'crypto';
 import users from '../data/users.json';
 import userSchema from '../validation/user';
+import { isLoginUniq } from '../util/user';
 
 const validator = joiValidator.createValidator({});
 
@@ -13,7 +14,7 @@ router.param('id', (req, _res, next, id) => {
   if (req.user) {
     next();
   } else {
-    next({ error: `User with id '${id}' not found` });
+    next(`User with id '${id}' not found`);
   }
 });
 
@@ -28,20 +29,25 @@ router
 
     res.json(usersFiltered);
   })
-  .post(validator.body(userSchema.new), ({ body }, res) => {
-    const user = { id: randomUUID(), ...body, isDeleted: false };
+  .post(
+    ({ body: { login } }, _res, next) => {
+      isLoginUniq(login) ? next() : next(`login '${login}' already exists`);
+    },
+    validator.body(userSchema.new),
+    ({ body }, res) => {
+      const user = { id: randomUUID(), ...body, isDeleted: false };
 
-    users.push(user);
-    res.json(user);
-  });
+      users.push(user);
+      res.json(user);
+    }
+  );
 
 router
   .route('/:id')
   .get(({ user }, res) => res.json(user))
   .patch(
-    ({ user, body }, _res, next) => {
-      body.id = user.id;
-      next();
+    ({ user, body: { login } }, _res, next) => {
+      !login || isLoginUniq(login, user.id) ? next() : next(`login '${login}' already exists`);
     },
     validator.body(userSchema.update),
     ({ user, body: { login, password, age } }, res) => {
