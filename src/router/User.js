@@ -1,7 +1,7 @@
 import express from 'express';
 import joiValidator from 'express-joi-validation';
 import { randomUUID } from 'crypto';
-import users from '../data/users.json';
+import users from '../data/Users.json';
 import userSchema from '../validation/user';
 import { isLoginUniq } from '../util/user';
 

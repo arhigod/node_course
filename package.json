@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node ./src",
-    "task1_1": "nodemon --exec babel-node ./basic_tasks/task1_1",
-    "task1_2": "nodemon --exec babel-node ./basic_tasks/task1_2"
+    "start": "babel-node ./src",
+    "task1_1": "npx nodemon --exec babel-node ./basic_tasks/task1_1",
+    "task1_2": "npx nodemon --exec babel-node ./basic_tasks/task1_2"
   },
   "repository": {
     "type": "git",
