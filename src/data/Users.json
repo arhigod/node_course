@@ -1,4 +1,0 @@
-[
-  { "id": "1", "login": "login1", "password": "qwe1", "age": 41, "isDeleted": false },
-  { "id": "2", "login": "login2", "password": "qwe2", "age": 42, "isDeleted": false }
-]
