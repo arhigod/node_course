@@ -32,9 +32,4 @@ router
     })
   );
 
-router.use('/', (err, _req, res, next) => {
-  res.status(400).json(err.message ?? 'Internal Server Error');
-  next();
-});
-
 export default router;
