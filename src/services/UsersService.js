@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import { randomUUID } from 'crypto';
+import jwt from 'jsonwebtoken';
 
 export default class UsersService {
   constructor(model) {
@@ -28,6 +29,16 @@ export default class UsersService {
     }
   }
 
+  async getUserByLogin(login) {
+    const user = await this.model.findOne({ where: { login } });
+
+    if (user) {
+      return user;
+    } else {
+      throw Error(`User with login '${login}' not found`);
+    }
+  }
+
   async deleteUser(id) {
     const user = await this.getUser(id);
 
@@ -42,5 +53,15 @@ export default class UsersService {
       password: password ?? user.password,
       age: age ?? user.age
     });
+  }
+
+  async authorizeUser(login, password) {
+    const user = await this.getUserByLogin(login);
+
+    if (user.password !== password) {
+      throw Error(`Login and/or password are incorrect`);
+    }
+
+    return jwt.sign({ login }, 'shhhhh', { expiresIn: '1d' });
   }
 }
