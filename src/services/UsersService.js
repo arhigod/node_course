@@ -62,6 +62,6 @@ export default class UsersService {
       throw Error(`Login and/or password are incorrect`);
     }
 
-    return jwt.sign({ login }, 'shhhhh', { expiresIn: '1d' });
+    return jwt.sign({ login }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_MAX_AGE });
   }
 }
