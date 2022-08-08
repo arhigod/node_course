@@ -1,7 +1,8 @@
 {
   "env": {
     "es2021": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "plugins": ["prettier"],
   "extends": "eslint:recommended",
